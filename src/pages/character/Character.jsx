@@ -20,19 +20,19 @@ const Character = ({
       <div className="ml-3 text-lg font-bold">Go Back</div>
     </Link>
     <div className="flex flex-col items-center">
-      <div className="h-[300px] w-[300px] relative rounded-[50%] overflow-hidden border-1 border-[rgba(242,242,247,1)]">
+      <div className="h-[148px] w-[146px] xs:h-[300px] xs:w-[300px] relative rounded-[50%] overflow-hidden border-4 border-[rgba(242,242,247,1)]">
         <Image fill src={image} />
       </div>
-      <h1 className="text-[40px] font-normal leading-[56.25px] text-[rgba(8,31,50,1)]">
+      <h1 className="text-[32px] xs:text-[40px] font-normal leading-[56.25px] text-[rgba(8,31,50,1)]">
         {name}
       </h1>
     </div>
-    <div className="flex w-full justify-between">
-      <div className="flex flex-col w-[48%] my-[42px]">
-        <h1 className="font-medium text-xl leading-6 tracking-[0.15px] text-[rgba(142,142,147,1)] mb-11">
+    <div className="gap-x-5 flex w-full justify-center flex-col xs:flex-row pb-11 xs:p-0">
+      <div className="flex flex-col my-3 xs:my-[42px] flex-1">
+        <h1 className="font-medium text-xl leading-6 tracking-[0.15px] text-[rgba(142,142,147,1)] xs:mb-11 mb-1.5">
           Informations
         </h1>
-        <div className="w-full">
+        <div className="w-full pl-5">
           <div className="border-b border-[(255,255,255,1)]">
             <h3 className="font-bold text-base leading-6 tracking-[0.15px] text-[rgba(8,31,50,1)] pt-[9px]">
               Gender
@@ -83,13 +83,13 @@ const Character = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-[48%] my-[42px]">
-        <h1 className="font-medium text-xl leading-6 tracking-[0.15px] text-[rgba(142,142,147,1)] mb-11">
+      <div className="flex flex-col my-[42px] flex-1">
+        <h1 className="font-medium text-xl leading-6 tracking-[0.15px] text-[rgba(142,142,147,1)] xs:mb-11 mb-1.5">
           Episodes
         </h1>
         {episodes?.length ? (
           episodes?.map((episode) => (
-            <div key={episode.id} className="w-full">
+            <div key={episode.id} className=" pl-5">
               <div className="border-b border-[(255,255,255,1)]">
                 <h3 className="font-bold text-base leading-6 tracking-[0.15px] text-[rgba(8,31,50,1)] pt-[9px]">
                   {episode.episode}

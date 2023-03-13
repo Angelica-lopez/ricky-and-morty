@@ -20,8 +20,6 @@ const Home = ({ characters }) => {
     }));
   };
 
-  console.log(filters, "filters");
-
   return (
     <>
       <div className="flex flex-col items-center max-w-[1100px] px-10 m-auto">
