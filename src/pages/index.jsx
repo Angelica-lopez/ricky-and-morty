@@ -5,17 +5,7 @@ import InputSearch from "../components/InputSearch";
 import { infoCharacters, infoSpecies, infoGender, infoStatus } from "../data";
 
 const Home = () => (
-  <div>
-    <header className="py-[6px] shadow-shadowHeader">
-      <div className="flex justify-start max-w-[1100px] px-[40px] m-auto">
-        <Image
-          src="/images/logoheader.png"
-          width={50}
-          height={50}
-          alt="Logo rick and morty"
-        />
-      </div>
-    </header>
+  <>
     <div className="flex flex-col items-center max-w-[1100px] px-10 m-auto">
       <Image
         src="/images/Logo.svg"
@@ -49,10 +39,7 @@ const Home = () => (
         LOAD MORE
       </button>
     </div>
-    <footer className="py-5 flex justify-center font-bold shadow-shadowFooter text-lg">
-      Rick and Morty
-    </footer>
-  </div>
+  </>
 );
 
 export default Home;
