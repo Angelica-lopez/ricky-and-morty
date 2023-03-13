@@ -2,9 +2,9 @@ import Image from "next/image";
 import Card from "../components/Card";
 import InputSelect from "../components/InputSelect";
 import InputSearch from "../components/InputSearch";
-import { infoCharacters, infoSpecies, infoGender, infoStatus } from "../data";
+import { infoSpecies, infoGender, infoStatus } from "../data";
 
-const Home = () => (
+const Home = ({ characters }) => (
   <>
     <div className="flex flex-col items-center max-w-[1100px] px-10 m-auto">
       <Image
@@ -21,12 +21,13 @@ const Home = () => (
         <InputSelect name="status" options={infoStatus} category="Status" />
       </div>
       <div className="grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid gap-5 justify-items-center w-full">
-        {infoCharacters?.map((elem) => (
+        {characters?.map((elem) => (
           <Card
             key={elem.id}
+            id={elem.id}
             name={elem.name}
-            specie={elem.specie}
-            url={elem.url}
+            species={elem.species}
+            imageUrl={elem.image}
           />
         ))}
       </div>
@@ -41,5 +42,11 @@ const Home = () => (
     </div>
   </>
 );
+
+Home.getInitialProps = async () => {
+  const characterRes = await fetch("https://rickandmortyapi.com/api/character");
+  const characters = await characterRes.json();
+  return { characters: characters.results };
+};
 
 export default Home;
