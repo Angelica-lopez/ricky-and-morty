@@ -49,46 +49,63 @@ export const infoCharacters = [
   },
 ];
 
-export const infoSpecies = [
+export const SPECIES_OPTIONS = [
   {
     id: "001",
     label: "Human",
-    value: "H-01",
+    value: "Human",
   },
   {
     id: "002",
     label: "Alien",
-    value: "A-01",
-  },
-  {
-    id: "003",
-    label: "Vampire",
-    value: "V-01",
+    value: "Alien",
   },
 ];
 
-export const infoGender = [
+export const GENDER_OPTIONS = [
   {
     id: "0-1",
     label: "Female",
-    value: "F-01",
+    value: "Female",
   },
   {
     id: "0-2",
     label: "Male",
-    value: "V-01",
+    value: "Male",
+  },
+  {
+    id: "0-3",
+    label: "Genderless",
+    value: "Genderless",
+  },
+  {
+    id: "0-4",
+    label: "Unknown",
+    value: "Unknown",
   },
 ];
 
-export const infoStatus = [
+export const STATUS_OPTIONS = [
   {
     id: "00-1",
-    label: "Active",
+    label: "Alive",
     value: "A-01",
   },
   {
     id: "00-2",
-    label: "Inactive",
-    value: "I-01",
+    label: "Dead",
+    value: "Dead",
+  },
+  {
+    id: "00-3",
+    label: "Unknown",
+    value: "Unknown",
   },
 ];
+
+export const DEFAULT_FILTERS = {
+  gender: "",
+  species: "",
+  status: "",
+  name: "",
+};
