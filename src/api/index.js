@@ -1,7 +1,9 @@
 const BASE_API_URL = "https://rickandmortyapi.com/api";
 
-export const getCharacters = async () => {
-  const characterRes = await fetch(`${BASE_API_URL}/character`);
+export const getCharacters = async (filters) => {
+  const characterRes = await fetch(
+    `${BASE_API_URL}/character${filters || ""} `
+  );
   return characterRes.json();
 };
 

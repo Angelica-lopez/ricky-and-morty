@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import EmptyState from "../components/EmptyState";
 import InputSearch from "../components/InputSearch";
 import Modal from "../components/Modal";
 import { getCharacters } from "../api";
+import { formatFilters } from "../utils";
 import {
   SPECIES_OPTIONS,
   GENDER_OPTIONS,
@@ -13,8 +15,11 @@ import {
 import SelectFilters from "../components/SelectFilters";
 
 const Home = ({ characters }) => {
+  const [fetchFromClient, setFetchFromClient] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [openModal, setOpenModal] = useState(false);
+  const [characterState, setCharacterState] = useState(characters);
+  const [isLoadingCharacters, setIsLoadingCharacters] = useState(false);
 
   const onCloseModal = () => setOpenModal(false);
   const onOpenModal = () => setOpenModal(true);
@@ -24,7 +29,31 @@ const Home = ({ characters }) => {
       ...prevFilters,
       [name]: value,
     }));
+    if (!fetchFromClient) setFetchFromClient(true);
   };
+
+  const onFeachCharactersByFilter = async (fetchedFilters) => {
+    setIsLoadingCharacters(true);
+    try {
+      const formattedFilters = formatFilters(fetchedFilters);
+      const filteredCharacters = await getCharacters(formattedFilters);
+      setCharacterState(filteredCharacters.results || []);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoadingCharacters(false);
+    }
+  };
+
+  const onClearFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+  };
+
+  useEffect(() => {
+    if (fetchFromClient) {
+      onFeachCharactersByFilter(filters);
+    }
+  }, [filters, fetchFromClient]);
 
   return (
     <>
@@ -41,7 +70,7 @@ const Home = ({ characters }) => {
       )}
       <div className="flex flex-col items-center max-w-[1100px] px-6 xs:px-10 m-auto relative z-10 ">
         <Image
-          src="/images/Logo.svg"
+          src="/images/logo.svg"
           width={600}
           height={100}
           className="py-[26px]"
@@ -75,26 +104,43 @@ const Home = ({ characters }) => {
             onFilterChange={onHandelFilterChange}
           />
         </div>
-
-        <div className="xs:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-[repeat(auto-fit,minmax(240px,1fr))] grid gap-5 justify-items-center w-full">
-          {characters?.map((elem) => (
-            <Card
-              key={elem.id}
-              id={elem.id}
-              name={elem.name}
-              species={elem.species}
-              imageUrl={elem.image}
+        {isLoadingCharacters ? (
+          <div className="py-2">
+            <Image
+              src="/images/loading.svg"
+              width={300}
+              height={100}
+              className="animate-spin"
+              alt="Loading image"
+              priority
             />
-          ))}
-        </div>
-      </div>
-      <div className="flex justify-center pt-12 pb-11">
-        <button
-          type="submit"
-          className="font-medium text-sm leading-4 tracking-[1.5px] text-[#2196F3] px-[30.46px] py-[10.005px] bg-[#F2F9FE] shadow-shadowButton rounded"
-        >
-          LOAD MORE
-        </button>
+          </div>
+        ) : !characterState?.length ? (
+          <EmptyState />
+        ) : (
+          <div className="xs:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-[repeat(auto-fit,minmax(240px,1fr))] grid gap-5 justify-items-center w-full">
+            {characterState?.map((elem) => (
+              <Card
+                key={elem.id}
+                id={elem.id}
+                name={elem.name}
+                species={elem.species}
+                imageUrl={elem.image}
+              />
+            ))}
+          </div>
+        )}
+        {Object.values(filters).some((filter) => !!filter) && (
+          <div className="flex justify-center py-6">
+            <button
+              type="button"
+              onClick={onClearFilters}
+              className="font-medium text-sm leading-4 tracking-[1.5px] text-[#2196F3] px-[30.46px] py-[10px] bg-[#F2F9FE] shadow-shadowButton rounded uppercase"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
