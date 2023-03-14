@@ -14,7 +14,7 @@ const Character = ({
   image,
   episodes,
 }) => (
-  <div className="flex justify-start max-w-[1100px] px-[40px] m-auto flex-col">
+  <div className="flex justify-start max-w-[1100px] px-2 xs:px-10 m-auto flex-col">
     <Link href="/" className="flex items-center py-4">
       <BiArrowBack className="w-6 h-6" />
       <div className="ml-3 text-lg font-bold">Go Back</div>
@@ -32,7 +32,7 @@ const Character = ({
         <h1 className="font-medium text-xl leading-6 tracking-[0.15px] text-[rgba(142,142,147,1)] xs:mb-11 mb-1.5">
           Informations
         </h1>
-        <div className="w-full pl-5">
+        <div className="w-full p-0 xs:pl-5">
           <div className="border-b border-[(255,255,255,1)]">
             <h3 className="font-bold text-base leading-6 tracking-[0.15px] text-[rgba(8,31,50,1)] pt-[9px]">
               Gender
@@ -89,7 +89,7 @@ const Character = ({
         </h1>
         {episodes?.length ? (
           episodes?.map((episode) => (
-            <div key={episode.id} className=" pl-5">
+            <div key={episode.id} className="p-0 xs:pl-5">
               <div className="border-b border-[(255,255,255,1)]">
                 <h3 className="font-bold text-base leading-6 tracking-[0.15px] text-[rgba(8,31,50,1)] pt-[9px]">
                   {episode.episode}
@@ -145,27 +145,6 @@ Character.propTypes = {
   }),
   image: PropTypes.string,
   episodes: PropTypes.array,
-};
-
-Character.getInitialProps = async ({ query }) => {
-  const { id } = query;
-  const baseApiUrl = "https://rickandmortyapi.com/api";
-  const characterUrl = `${baseApiUrl}/character/${id}`;
-  const characterRes = await fetch(characterUrl);
-  const character = await characterRes.json();
-  const episodesIds = character.episode
-    .slice(0, 4)
-    .map((episodeUrl) => episodeUrl.split("/").pop());
-
-  const episodesRes = await fetch(
-    `${baseApiUrl}/episode/${episodesIds.join(",")}`
-  );
-  const episodes = await episodesRes.json();
-
-  return {
-    ...character,
-    episodes: episodes?.length > 1 ? episodes : [episodes],
-  };
 };
 
 export default Character;

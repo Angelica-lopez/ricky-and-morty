@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Header = () => (
   <header className="py-[6px] shadow-shadowHeader">
-    <div className="flex justify-start max-w-[1100px] px-[40px] m-auto">
+    <div className="flex justify-start max-w-[1100px] px-3 xs:px-10 m-auto">
       <Image
         src="/images/logoheader.png"
         width={50}
