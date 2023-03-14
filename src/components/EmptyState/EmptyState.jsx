@@ -3,7 +3,7 @@ import Image from "next/image";
 const EmptyState = () => (
   <div className="flex items-center justify-center flex-col">
     <Image
-      src="/images/emptyCharacters.png"
+      src="/static/images/emptyCharacters.png"
       width={300}
       height={100}
       alt="Logo letras"

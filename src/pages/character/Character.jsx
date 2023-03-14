@@ -133,7 +133,7 @@ Character.defaultProps = {
   location: {
     name: "-",
   },
-  image: "/images/rick.png",
+  image: "/static/images/rick.png",
   episodes: [],
 };
 

@@ -7,6 +7,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "rickandmortyapi.com",
       },
+      {
+        protocol: "https",
+        hostname: "angelica-ricky-and-morty.vercel.app/",
+      },
     ],
   },
 };

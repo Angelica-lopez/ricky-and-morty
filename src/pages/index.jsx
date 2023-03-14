@@ -104,7 +104,7 @@ const Home = ({ characters, filters: filtersProp }) => {
       )}
       <div className="flex flex-col items-center max-w-[1100px] px-6 xs:px-10 m-auto relative z-10 ">
         <Image
-          src="/images/logo.svg"
+          src="/static/images/logo.svg"
           width={600}
           height={100}
           className="py-[26px]"
@@ -141,7 +141,7 @@ const Home = ({ characters, filters: filtersProp }) => {
         {isLoadingCharacters ? (
           <div className="py-2">
             <Image
-              src="/images/loading.svg"
+              src="/static/images/loading.svg"
               width={300}
               height={100}
               className="animate-spin"
