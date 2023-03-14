@@ -164,7 +164,8 @@ const Home = ({ characters, filters: filtersProp }) => {
             ))}
           </div>
         )}
-        {Object.values(filters).some((filter) => !!filter) && (
+        {(Object.values(filters).some((filter) => !!filter) ||
+          !!searchedName) && (
           <div className="flex justify-center py-6">
             <button
               type="button"
