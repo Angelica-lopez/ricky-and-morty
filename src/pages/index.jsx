@@ -3,6 +3,7 @@ import { useState } from "react";
 import Card from "../components/Card";
 import InputSearch from "../components/InputSearch";
 import Modal from "../components/Modal";
+import { getCharacters } from "../api";
 import {
   SPECIES_OPTIONS,
   GENDER_OPTIONS,
@@ -100,8 +101,7 @@ const Home = ({ characters }) => {
 };
 
 export const getServerSideProps = async () => {
-  const characterRes = await fetch("https://rickandmortyapi.com/api/character");
-  const characters = await characterRes.json();
+  const characters = await getCharacters();
   return { props: { characters: characters.results } };
 };
 

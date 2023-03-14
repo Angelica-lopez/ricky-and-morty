@@ -1,17 +1,13 @@
+import { getCharacterById, getEpisodesByIds } from "../../api";
+
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
-  const baseApiUrl = "https://rickandmortyapi.com/api";
-  const characterUrl = `${baseApiUrl}/character/${id}`;
-  const characterRes = await fetch(characterUrl);
-  const character = await characterRes.json();
+  const character = await getCharacterById(id);
   const episodesIds = character?.episode
     .slice(0, 4)
     .map((episodeUrl) => episodeUrl.split("/").pop());
 
-  const episodesRes = await fetch(
-    `${baseApiUrl}/episode/${episodesIds.join(",")}`
-  );
-  const episodes = await episodesRes.json();
+  const episodes = await getEpisodesByIds(episodesIds);
 
   return {
     props: {

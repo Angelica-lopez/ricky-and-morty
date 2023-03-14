@@ -21,7 +21,7 @@ const Character = ({
     </Link>
     <div className="flex flex-col items-center">
       <div className="h-[148px] w-[146px] xs:h-[300px] xs:w-[300px] relative rounded-[50%] overflow-hidden border-4 border-[rgba(242,242,247,1)]">
-        <Image fill src={image} />
+        <Image fill src={image} alt="Character picture" />
       </div>
       <h1 className="text-[32px] xs:text-[40px] font-normal leading-[56.25px] text-[rgba(8,31,50,1)]">
         {name}
