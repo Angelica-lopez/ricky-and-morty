@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import EmptyState from "../components/EmptyState";
@@ -14,9 +15,14 @@ import {
 } from "../data";
 import SelectFilters from "../components/SelectFilters";
 
-const Home = ({ characters }) => {
+const Home = ({ characters, filters: filtersProp }) => {
+  const router = useRouter();
+  const [searchedName, setSearchedName] = useState(filtersProp.name || "");
   const [fetchFromClient, setFetchFromClient] = useState(false);
-  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState({
+    ...DEFAULT_FILTERS,
+    ...filtersProp,
+  });
   const [openModal, setOpenModal] = useState(false);
   const [characterState, setCharacterState] = useState(characters);
   const [isLoadingCharacters, setIsLoadingCharacters] = useState(false);
@@ -32,12 +38,29 @@ const Home = ({ characters }) => {
     if (!fetchFromClient) setFetchFromClient(true);
   };
 
-  const onFeachCharactersByFilter = async (fetchedFilters) => {
+  const onHandelInputChange = ({ target: { value } }) => {
+    setSearchedName(value);
+    if (!fetchFromClient) setFetchFromClient(true);
+  };
+
+  const onFeachCharactersByFilter = async () => {
     setIsLoadingCharacters(true);
     try {
-      const formattedFilters = formatFilters(fetchedFilters);
+      const formattedFilters = formatFilters({
+        ...filters,
+        name: searchedName,
+      });
       const filteredCharacters = await getCharacters(formattedFilters);
       setCharacterState(filteredCharacters.results || []);
+      router.push({
+        pathname: "/",
+        query: {
+          ...(filters.gender && { gender: filters.gender }),
+          ...(filters.species && { species: filters.species }),
+          ...(filters.status && { status: filters.status }),
+          ...(searchedName && { name: searchedName }),
+        },
+      });
     } catch (e) {
       console.log(e);
     } finally {
@@ -47,13 +70,24 @@ const Home = ({ characters }) => {
 
   const onClearFilters = () => {
     setFilters(DEFAULT_FILTERS);
+    setSearchedName("");
   };
 
   useEffect(() => {
     if (fetchFromClient) {
-      onFeachCharactersByFilter(filters);
+      onFeachCharactersByFilter();
     }
-  }, [filters, fetchFromClient]);
+  }, [filters]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (fetchFromClient) {
+        onFeachCharactersByFilter();
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchedName]);
 
   return (
     <>
@@ -80,9 +114,9 @@ const Home = ({ characters }) => {
         <div className="flex flex-col xs:hidden w-full gap-y-4 mb-12 mt-10">
           <InputSearch
             name="name"
-            value={filters.name}
+            value={searchedName}
             placeholder="Filter by name..."
-            onChange={onHandelFilterChange}
+            onChange={onHandelInputChange}
           />
           <button
             onClick={onOpenModal}
@@ -95,9 +129,9 @@ const Home = ({ characters }) => {
         <div className="xs:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-[repeat(auto-fit,minmax(240px,1fr))]  gap-5 justify-items-center w-full pb-4 hidden xs:grid">
           <InputSearch
             name="name"
-            value={filters.name}
+            value={searchedName}
             placeholder="Filter by name..."
-            onChange={onHandelFilterChange}
+            onChange={onHandelInputChange}
           />
           <SelectFilters
             filters={filters}
@@ -146,9 +180,11 @@ const Home = ({ characters }) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const characters = await getCharacters();
-  return { props: { characters: characters.results } };
+export const getServerSideProps = async ({ query }) => {
+  const formattedParams = formatFilters(query);
+  const characters = await getCharacters(formattedParams);
+
+  return { props: { characters: characters?.results || [], filters: query } };
 };
 
 export default Home;

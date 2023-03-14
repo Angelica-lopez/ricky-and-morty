@@ -89,7 +89,7 @@ export const STATUS_OPTIONS = [
   {
     id: "00-1",
     label: "Alive",
-    value: "A-01",
+    value: "Alive",
   },
   {
     id: "00-2",
@@ -107,5 +107,4 @@ export const DEFAULT_FILTERS = {
   gender: "",
   species: "",
   status: "",
-  name: "",
 };

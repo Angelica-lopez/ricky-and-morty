@@ -1,4 +1,8 @@
 export const formatFilters = (filters) => {
+  if (Object.values(filters).every((filter) => !filter)) {
+    return "";
+  }
+
   const keys = Object.keys(filters);
   const formattedString = keys.reduce((acc, key) => {
     const value = filters[key];
